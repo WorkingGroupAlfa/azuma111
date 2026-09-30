@@ -1,5 +1,10 @@
 const translations = {
   en: {
+    asia_best: "ASIA BEST",
+    dimsum9: "DUMPLING WITH SPINACH AND PRAWN",
+    candie6: "NUT AND CARAMEL",
+    sake300ml: "300 ml",
+    drink13_750_desc: "750 ml, still",
     Menu: "MENU",
     Bar: "BAR",
     Tea_Card: "TEA MENU",
@@ -502,6 +507,11 @@ const translations = {
   },
 
   ua: {
+    asia_best: "ASIA BEST",
+    dimsum9: "ДАМПЛІНГ З ШПИНАТОМ ТА КРЕВЕТКОЮ",
+    candie6: "ГОРІХОВО-КАРАМЕЛЬНА",
+    sake300ml: "300 мл",
+    drink13_750_desc: "750 мл, негазована",
   teaDrunkCherryName: "П'яна вишня",
   teaDrunkCherryDesc: "",
 
