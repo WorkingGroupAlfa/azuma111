@@ -20,9 +20,9 @@ const KANJI={
 };
 const UI={
  ua:{callA:'Подзвонити',delivery:'Замовити доставку',hoursL:'Години роботи',hoursV:'Щодня 12:00 – 23:00',copied:'Скопійовано',addrL:'Адреса',addr:'Французький бульвар, 54/23',telL:'Телефон',call:'Подзвонити',ph:'Пошук',none:'Нічого не знайдено. Спробуйте іншу назву або інгредієнт.',
-   cur:'грн',choice:'На вибір',skip:'натисніть, щоб пропустити',tagM:'Пікантна страва',tagH:'Гостра страва'},
+   cur:'грн',choice:'На вибір',tagM:'Пікантна страва',tagH:'Гостра страва'},
  en:{callA:'Call',delivery:'Order delivery',hoursL:'Working hours',hoursV:'Daily 12:00 – 23:00',copied:'Copied',addrL:'Address',addr:'54/23 Frantsuzkyi Blvd',telL:'Phone',call:'Call',ph:'Search',none:'Nothing found. Try another name or ingredient.',
-   cur:'UAH',choice:'Your choice',skip:'tap to skip',tagM:'Mildly spicy',tagH:'Hot'}
+   cur:'UAH',choice:'Your choice',tagM:'Mildly spicy',tagH:'Hot'}
 };
 let lang='ua', cur=null, query='';
 // language: the guest's saved choice, otherwise the phone's language (Ukrainian/Russian -> UA, anything else -> EN)
@@ -42,7 +42,6 @@ function renderChrome(){
   document.querySelectorAll('[data-t]').forEach(el=>el.textContent=u[el.dataset.t]);
   document.querySelectorAll('[data-t-aria]').forEach(el=>el.setAttribute('aria-label',u[el.dataset.tAria]));
   document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===lang));
-  document.getElementById('skip').textContent=u.skip;
   document.getElementById('q').placeholder=u.ph;
   document.getElementById('tiles').innerHTML=SECTIONS.map(s=>`<a class="tile" href="#${s.key}"><span class="k" aria-hidden="true">${s.k}</span><b>${s[lang]}</b></a>`).join('');
 }
