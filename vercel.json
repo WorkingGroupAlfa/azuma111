@@ -1,0 +1,95 @@
+{
+  "functions": {
+    "api/*.js": {
+      "includeFiles": "js/data.js"
+    }
+  },
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/js/data.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/menu",
+      "destination": "/#menu",
+      "permanent": true
+    },
+    {
+      "source": "/menu.html",
+      "destination": "/#menu",
+      "permanent": true
+    },
+    {
+      "source": "/bar",
+      "destination": "/#bar",
+      "permanent": true
+    },
+    {
+      "source": "/bar.html",
+      "destination": "/#bar",
+      "permanent": true
+    },
+    {
+      "source": "/tea",
+      "destination": "/#tea",
+      "permanent": true
+    },
+    {
+      "source": "/tea.html",
+      "destination": "/#tea",
+      "permanent": true
+    },
+    {
+      "source": "/wine",
+      "destination": "/#wine",
+      "permanent": true
+    },
+    {
+      "source": "/wine.html",
+      "destination": "/#wine",
+      "permanent": true
+    },
+    {
+      "source": "/main",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/main.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

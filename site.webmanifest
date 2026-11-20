@@ -1,0 +1,16 @@
+{
+  "name": "AZUMA",
+  "short_name": "AZUMA",
+  "description": "Меню ресторану паназійської кухні AZUMA в Одесі",
+  "lang": "uk",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#171615",
+  "theme_color": "#171615",
+  "icons": [
+    { "src": "img/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
