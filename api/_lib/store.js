@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { env, redis, redisConfigured, parseDataFile, HttpError } = require('./common');
+const { env, redis, redisConfigured, redisEnvNames, parseDataFile, HttpError } = require('./common');
 
 const K = { menu: 'azuma:menu', ver: 'azuma:menu:ver', hist: 'azuma:menu:hist', base: 'azuma:menu:base' };
 const HIST_MAX = 20;
@@ -55,7 +55,7 @@ return {1, nv}`;
 
 async function getMenu() {
   const b = bundled();
-  if (!redisConfigured()) return { data: b.data, ver: 0, source: 'bundled', storage: false, bundledChanged: false };
+  if (!redisConfigured()) return { data: b.data, ver: 0, source: 'bundled', storage: false, bundledChanged: false, envNames: redisEnvNames() };
   const [m, v, base] = await redis([['GET', K.menu], ['GET', K.ver], ['GET', K.base]]);
   const ver = +v || 0;
   if (!m) return { data: b.data, ver, source: 'bundled', storage: true, bundledChanged: false };

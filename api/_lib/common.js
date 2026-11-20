@@ -90,14 +90,25 @@ function parseDataFile(text) {
 // Production: Upstash via Vercel Marketplace (KV_REST_API_* or UPSTASH_REDIS_REST_*).
 // Dev only: LOCAL_REDIS_FILE = path to a JSON file that emulates the few commands used here.
 const localFile = () => env('LOCAL_REDIS_FILE') || env('LOCAL_STATS_FILE');
+// Finds the Upstash REST credentials. Vercel may add a custom prefix when the store is connected
+// (e.g. STORAGE_KV_REST_API_URL), so any name ending in KV_REST_API_URL / UPSTASH_REDIS_REST_URL is accepted.
+function redisCreds() {
+  const keys = Object.keys(process.env);
+  const pick = re => { const k = keys.find(n => re.test(n) && String(process.env[n]).trim()); return k ? String(process.env[k]).trim() : ''; };
+  const url = env('KV_REST_API_URL') || env('UPSTASH_REDIS_REST_URL') || pick(/KV_REST_API_URL$/) || pick(/REDIS_REST_URL$/);
+  const tok = env('KV_REST_API_TOKEN') || env('UPSTASH_REDIS_REST_TOKEN') ||
+    pick(/(?<!READ_ONLY_)KV_REST_API_TOKEN$/) || pick(/(?<!READ_ONLY_)REDIS_REST_TOKEN$/);
+  return { url, tok };
+}
+// Names (never values) of Redis-looking env vars the server can see - shown in the admin to diagnose setup.
+function redisEnvNames() { return Object.keys(process.env).filter(n => /(^|_)(REDIS|KV)(_|$)/.test(n)).sort(); }
 function redisConfigured() {
-  return !!((env('KV_REST_API_URL') && env('KV_REST_API_TOKEN')) ||
-    (env('UPSTASH_REDIS_REST_URL') && env('UPSTASH_REDIS_REST_TOKEN')) || localFile());
+  const c = redisCreds();
+  return !!((c.url && c.tok) || localFile());
 }
 // Sends commands as one pipeline request; returns the results in order. Throws on any error.
 async function redis(cmds, timeoutMs = 4000) {
-  const url = env('KV_REST_API_URL') || env('UPSTASH_REDIS_REST_URL');
-  const tok = env('KV_REST_API_TOKEN') || env('UPSTASH_REDIS_REST_TOKEN');
+  const { url, tok } = redisCreds();
   if (url && tok) {
     const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), timeoutMs);
     try {
@@ -177,5 +188,5 @@ function lastDays(n) {
 
 module.exports = {
   env, send, fail, readJson, sleep, HttpError, passwordOk, makeToken, checkToken, requireAuth,
-  parseDataFile, redis, redisConfigured, kyivDay, lastDays,
+  parseDataFile, redis, redisConfigured, redisEnvNames, kyivDay, lastDays,
 };

@@ -194,7 +194,7 @@ async function loadMenu() {
   st.hidden = false; st.className = 'state'; st.textContent = 'Завантаження меню…';
   try {
     const j = await api('/api/menu');
-    S = buildState(j.data, j.ver, { source: j.source, storage: j.storage, bundledChanged: j.bundledChanged });
+    S = buildState(j.data, j.ver, { source: j.source, storage: j.storage, bundledChanged: j.bundledChanged, envNames: j.envNames || [] });
     if (narrow()) for (const s of SECTIONS) for (const c of S.secs[s.key]) collapsed.add(s.key + ':' + c.id);
     st.hidden = true;
     render();
@@ -657,7 +657,13 @@ function setView() {
 /* ---------------- notices about storage ---------------- */
 function noticeHtml() {
   if (!S || !S.meta) return '';
-  if (S.meta.storage === false) return `<div class="notice warn">База даних (Upstash Redis) ще не підключена — зміни зберегти не вийде. Див. інструкцію для налаштування.</div>`;
+  if (S.meta.storage === false) {
+    // diagnostics: which Redis-like variables the server sees (names only)
+    const names = (S.meta.envNames || []);
+    const seen = names.length ? `Сервер бачить змінні: ${names.map(esc).join(', ')}. Потрібна пара REST URL + REST TOKEN від Upstash.`
+                              : 'Сервер не бачить жодної змінної бази. Найчастіше — після підключення бази не зроблено Redeploy.';
+    return `<div class="notice warn">База даних (Upstash Redis) ще не підключена — зміни зберегти не вийде.<br>${seen}</div>`;
+  }
   if (S.meta.bundledChanged) return `<div class="notice">Розробник оновив файл меню на сайті після ваших змін. Зараз гості бачать вашу версію. <a href="#history">Докладніше</a></div>`;
   return '';
 }
